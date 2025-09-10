@@ -1,4 +1,4 @@
-export default async (req, context) => {
+exports.handler = async (event, context) => {
     // Set CORS headers for ChatGPT
     const headers = {
       'Content-Type': 'application/json',
@@ -8,8 +8,12 @@ export default async (req, context) => {
     };
 
     // Handle preflight requests
-    if (req.method === 'OPTIONS') {
-      return new Response(null, { status: 200, headers });
+    if (event.httpMethod === 'OPTIONS') {
+      return {
+        statusCode: 200,
+        headers,
+        body: ''
+      };
     }
 
     // Return Semrush URL
@@ -18,8 +22,9 @@ export default async (req, context) => {
   atgpt.com&utm_medium=chatgpt&utm_campaign=mrca-gpt"
     };
 
-    return new Response(JSON.stringify(response), {
-      status: 200,
-      headers
-    });
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify(response)
+    };
   };
